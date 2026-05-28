@@ -1,6 +1,252 @@
 <!DOCTYPE html>
 <html>
-	<head>
+	<head></head>
+	<body>
+		<style>
+		  :root {
+		    --bg1: #08111f;
+		    --bg2: #101b2f;
+		    --panel: rgba(13, 24, 42, 0.86);
+		    --panel-border: rgba(153, 194, 255, 0.22);
+		    --text: #eef4ff;
+		    --muted: #9fb3d9;
+		    --accent: #7dd3fc;
+		    --accent2: #a78bfa;
+		    --yes: #34d399;
+		    --no: #fb7185;
+		    --shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+		  }
+		
+		  * {
+		    box-sizing: border-box;
+		  }
+		
+		  html, body {
+		    margin: 0;
+		    min-height: 100%;
+		    font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+		    color: var(--text);
+		    background:
+		      radial-gradient(circle at 20% 20%, rgba(125, 211, 252, 0.12), transparent 22%),
+		      radial-gradient(circle at 80% 20%, rgba(167, 139, 250, 0.12), transparent 18%),
+		      radial-gradient(circle at 50% 100%, rgba(52, 211, 153, 0.08), transparent 28%),
+		      linear-gradient(160deg, var(--bg1), var(--bg2) 60%, #050816 100%);
+		  }
+		
+		  body {
+		    min-height: 100vh;
+		    display: flex;
+		    align-items: center;
+		    justify-content: center;
+		    padding: 24px;
+		  }
+		
+		  body::before {
+		    content: "";
+		    position: fixed;
+		    inset: 0;
+		    pointer-events: none;
+		    background-image:
+		      linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+		      linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+		    background-size: 44px 44px;
+		    mask-image: radial-gradient(circle at center, black 55%, transparent 100%);
+		    opacity: 0.35;
+		  }
+		
+		  #app {
+		    width: min(100%, 680px);
+		    position: relative;
+		    background: var(--panel);
+		    border: 1px solid var(--panel-border);
+		    border-radius: 28px;
+		    box-shadow: var(--shadow);
+		    backdrop-filter: blur(14px);
+		    padding: 30px;
+		    overflow: hidden;
+		  }
+		
+		  #app::before {
+		    content: "";
+		    position: absolute;
+		    inset: 0;
+		    background: linear-gradient(135deg, rgba(125, 211, 252, 0.08), transparent 35%, rgba(167, 139, 250, 0.08));
+		    pointer-events: none;
+		  }
+		
+		  #app::after {
+		    content: "";
+		    position: absolute;
+		    inset: 14px;
+		    border: 1px solid rgba(255,255,255,0.05);
+		    border-radius: 20px;
+		    pointer-events: none;
+		  }
+		
+		  #question {
+		    position: relative;
+		    font-size: clamp(1.3rem, 2vw, 1.85rem);
+		    line-height: 1.35;
+		    font-weight: 700;
+		    letter-spacing: -0.02em;
+		    margin-bottom: 22px;
+		    padding-left: 18px;
+		    border-left: 4px solid var(--accent);
+		    text-shadow: 0 1px 0 rgba(255,255,255,0.08);
+		  }
+		
+		  .meta {
+		    position: relative;
+		    display: flex;
+		    gap: 10px;
+		    flex-wrap: wrap;
+		    margin-bottom: 18px;
+		    color: var(--muted);
+		    font-size: 0.92rem;
+		  }
+		
+		  .pill {
+		    display: inline-flex;
+		    align-items: center;
+		    gap: 8px;
+		    padding: 7px 12px;
+		    border-radius: 999px;
+		    border: 1px solid rgba(125, 211, 252, 0.18);
+		    background: rgba(9, 17, 31, 0.7);
+		  }
+		
+		  .btn-row {
+		    position: relative;
+		    display: flex;
+		    gap: 12px;
+		    flex-wrap: wrap;
+		  }
+		
+		  button {
+		    appearance: none;
+		    border: 1px solid rgba(255,255,255,0.12);
+		    border-radius: 16px;
+		    padding: 14px 18px;
+		    min-width: 130px;
+		    font-size: 1rem;
+		    font-weight: 800;
+		    letter-spacing: 0.02em;
+		    cursor: pointer;
+		    color: white;
+		    transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+		    box-shadow: 0 12px 24px rgba(0,0,0,0.2);
+		  }
+		
+		  button:hover {
+		    transform: translateY(-1px);
+		    filter: brightness(1.06);
+		  }
+		
+		  button:active {
+		    transform: translateY(1px);
+		  }
+		
+		  .yes {
+		    background: linear-gradient(135deg, #0f766e, var(--yes));
+		  }
+		
+		  .no {
+		    background: linear-gradient(135deg, #be123c, var(--no));
+		  }
+		
+		  .restart {
+		    background: linear-gradient(135deg, #334155, #0f172a);
+		    width: auto;
+		  }
+		
+		  hr {
+		    border: none;
+		    border-top: 1px solid rgba(255,255,255,0.12);
+		    margin: 22px 0;
+		  }
+		
+		  .result {
+		    font-size: 1.15rem;
+		    color: var(--muted);
+		    margin-bottom: 8px;
+		  }
+		
+		  .answer {
+		    font-size: clamp(2rem, 4vw, 3rem);
+		    font-weight: 900;
+		    letter-spacing: -0.04em;
+		    background: linear-gradient(135deg, #f8fafc, var(--accent), var(--accent2));
+		    -webkit-background-clip: text;
+		    background-clip: text;
+		    color: transparent;
+		  }
+		
+		  .symbol {
+		    position: absolute;
+		    top: 18px;
+		    right: 18px;
+		    width: 86px;
+		    height: 86px;
+		    border-radius: 18px;
+		    border: 1px solid rgba(125, 211, 252, 0.28);
+		    background: linear-gradient(180deg, rgba(15, 23, 42, 0.9), rgba(2, 6, 23, 0.9));
+		    display: flex;
+		    align-items: center;
+		    justify-content: center;
+		    flex-direction: column;
+		    box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+		    font-weight: 800;
+		    text-transform: uppercase;
+		  }
+		
+		  .symbol small {
+		    font-size: 0.62rem;
+		    color: var(--muted);
+		    letter-spacing: 0.18em;
+		    margin-top: 2px;
+		  }
+		
+		  @media (max-width: 520px) {
+		    #app {
+		      padding: 22px;
+		      border-radius: 22px;
+		    }
+		
+		    .symbol {
+		      position: static;
+		      margin-bottom: 16px;
+		      width: 100%;
+		      height: 64px;
+		      flex-direction: row;
+		      gap: 10px;
+		      justify-content: center;
+		    }
+		
+		    button {
+		      width: 100%;
+		    }
+		
+		    .btn-row {
+		      flex-direction: column;
+		    }
+		  }
+		</style>
+		
+		<div id="app">
+		  <div class="symbol">
+		    <div>PT</div>
+		    <small>QUIZ</small>
+		  </div>
+		  <div class="meta">
+		    <span class="pill">Atomic Decision Tree</span>
+		    <span class="pill">Periodic Table Edition</span>
+		  </div>
+		  <div id="question">Placeholder</div>
+		  <div class="btn-row">
+		    <button class="yes" onclick="response(true)">Yes</button>
+		    <button class="no" onclick="response(false)">No</button>
+		  </div>
+		</div>
 		<script>
 			var obj = {
 				"Is your element in block D?": {
@@ -910,252 +1156,5 @@
 			  }
 			}
 		</script>
-	</head>
-	<body>
-		<style>
-		  :root {
-		    --bg1: #08111f;
-		    --bg2: #101b2f;
-		    --panel: rgba(13, 24, 42, 0.86);
-		    --panel-border: rgba(153, 194, 255, 0.22);
-		    --text: #eef4ff;
-		    --muted: #9fb3d9;
-		    --accent: #7dd3fc;
-		    --accent2: #a78bfa;
-		    --yes: #34d399;
-		    --no: #fb7185;
-		    --shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
-		  }
-		
-		  * {
-		    box-sizing: border-box;
-		  }
-		
-		  html, body {
-		    margin: 0;
-		    min-height: 100%;
-		    font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-		    color: var(--text);
-		    background:
-		      radial-gradient(circle at 20% 20%, rgba(125, 211, 252, 0.12), transparent 22%),
-		      radial-gradient(circle at 80% 20%, rgba(167, 139, 250, 0.12), transparent 18%),
-		      radial-gradient(circle at 50% 100%, rgba(52, 211, 153, 0.08), transparent 28%),
-		      linear-gradient(160deg, var(--bg1), var(--bg2) 60%, #050816 100%);
-		  }
-		
-		  body {
-		    min-height: 100vh;
-		    display: flex;
-		    align-items: center;
-		    justify-content: center;
-		    padding: 24px;
-		  }
-		
-		  body::before {
-		    content: "";
-		    position: fixed;
-		    inset: 0;
-		    pointer-events: none;
-		    background-image:
-		      linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
-		      linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
-		    background-size: 44px 44px;
-		    mask-image: radial-gradient(circle at center, black 55%, transparent 100%);
-		    opacity: 0.35;
-		  }
-		
-		  #app {
-		    width: min(100%, 680px);
-		    position: relative;
-		    background: var(--panel);
-		    border: 1px solid var(--panel-border);
-		    border-radius: 28px;
-		    box-shadow: var(--shadow);
-		    backdrop-filter: blur(14px);
-		    padding: 30px;
-		    overflow: hidden;
-		  }
-		
-		  #app::before {
-		    content: "";
-		    position: absolute;
-		    inset: 0;
-		    background: linear-gradient(135deg, rgba(125, 211, 252, 0.08), transparent 35%, rgba(167, 139, 250, 0.08));
-		    pointer-events: none;
-		  }
-		
-		  #app::after {
-		    content: "";
-		    position: absolute;
-		    inset: 14px;
-		    border: 1px solid rgba(255,255,255,0.05);
-		    border-radius: 20px;
-		    pointer-events: none;
-		  }
-		
-		  #question {
-		    position: relative;
-		    font-size: clamp(1.3rem, 2vw, 1.85rem);
-		    line-height: 1.35;
-		    font-weight: 700;
-		    letter-spacing: -0.02em;
-		    margin-bottom: 22px;
-		    padding-left: 18px;
-		    border-left: 4px solid var(--accent);
-		    text-shadow: 0 1px 0 rgba(255,255,255,0.08);
-		  }
-		
-		  .meta {
-		    position: relative;
-		    display: flex;
-		    gap: 10px;
-		    flex-wrap: wrap;
-		    margin-bottom: 18px;
-		    color: var(--muted);
-		    font-size: 0.92rem;
-		  }
-		
-		  .pill {
-		    display: inline-flex;
-		    align-items: center;
-		    gap: 8px;
-		    padding: 7px 12px;
-		    border-radius: 999px;
-		    border: 1px solid rgba(125, 211, 252, 0.18);
-		    background: rgba(9, 17, 31, 0.7);
-		  }
-		
-		  .btn-row {
-		    position: relative;
-		    display: flex;
-		    gap: 12px;
-		    flex-wrap: wrap;
-		  }
-		
-		  button {
-		    appearance: none;
-		    border: 1px solid rgba(255,255,255,0.12);
-		    border-radius: 16px;
-		    padding: 14px 18px;
-		    min-width: 130px;
-		    font-size: 1rem;
-		    font-weight: 800;
-		    letter-spacing: 0.02em;
-		    cursor: pointer;
-		    color: white;
-		    transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
-		    box-shadow: 0 12px 24px rgba(0,0,0,0.2);
-		  }
-		
-		  button:hover {
-		    transform: translateY(-1px);
-		    filter: brightness(1.06);
-		  }
-		
-		  button:active {
-		    transform: translateY(1px);
-		  }
-		
-		  .yes {
-		    background: linear-gradient(135deg, #0f766e, var(--yes));
-		  }
-		
-		  .no {
-		    background: linear-gradient(135deg, #be123c, var(--no));
-		  }
-		
-		  .restart {
-		    background: linear-gradient(135deg, #334155, #0f172a);
-		    width: auto;
-		  }
-		
-		  hr {
-		    border: none;
-		    border-top: 1px solid rgba(255,255,255,0.12);
-		    margin: 22px 0;
-		  }
-		
-		  .result {
-		    font-size: 1.15rem;
-		    color: var(--muted);
-		    margin-bottom: 8px;
-		  }
-		
-		  .answer {
-		    font-size: clamp(2rem, 4vw, 3rem);
-		    font-weight: 900;
-		    letter-spacing: -0.04em;
-		    background: linear-gradient(135deg, #f8fafc, var(--accent), var(--accent2));
-		    -webkit-background-clip: text;
-		    background-clip: text;
-		    color: transparent;
-		  }
-		
-		  .symbol {
-		    position: absolute;
-		    top: 18px;
-		    right: 18px;
-		    width: 86px;
-		    height: 86px;
-		    border-radius: 18px;
-		    border: 1px solid rgba(125, 211, 252, 0.28);
-		    background: linear-gradient(180deg, rgba(15, 23, 42, 0.9), rgba(2, 6, 23, 0.9));
-		    display: flex;
-		    align-items: center;
-		    justify-content: center;
-		    flex-direction: column;
-		    box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
-		    font-weight: 800;
-		    text-transform: uppercase;
-		  }
-		
-		  .symbol small {
-		    font-size: 0.62rem;
-		    color: var(--muted);
-		    letter-spacing: 0.18em;
-		    margin-top: 2px;
-		  }
-		
-		  @media (max-width: 520px) {
-		    #app {
-		      padding: 22px;
-		      border-radius: 22px;
-		    }
-		
-		    .symbol {
-		      position: static;
-		      margin-bottom: 16px;
-		      width: 100%;
-		      height: 64px;
-		      flex-direction: row;
-		      gap: 10px;
-		      justify-content: center;
-		    }
-		
-		    button {
-		      width: 100%;
-		    }
-		
-		    .btn-row {
-		      flex-direction: column;
-		    }
-		  }
-		</style>
-		
-		<div id="app">
-		  <div class="symbol">
-		    <div>PT</div>
-		    <small>QUIZ</small>
-		  </div>
-		  <div class="meta">
-		    <span class="pill">Atomic Decision Tree</span>
-		    <span class="pill">Periodic Table Edition</span>
-		  </div>
-		  <div id="question">Placeholder</div>
-		  <div class="btn-row">
-		    <button class="yes" onclick="response(true)">Yes</button>
-		    <button class="no" onclick="response(false)">No</button>
-		  </div>
-		</div>
 	</body>
 </html>
